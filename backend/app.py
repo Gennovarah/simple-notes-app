@@ -1,27 +1,43 @@
-from flask import Flask, send_from_directory
-import os
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-FRONTEND_FOLDER = os.path.join(os.path.dirname(__file__), "..", "frontend")
+# Temporary storage for notes
+notes = []
 
 
 @app.route("/")
 def home():
-    return send_from_directory(FRONTEND_FOLDER, "index.html")
-
-
-@app.route("/<path:path>")
-def static_files(path):
-    return send_from_directory(FRONTEND_FOLDER, path)
+    return "Simple Notes API is running!"
 
 
 @app.route("/health")
 def health():
-    return {
-        "status": "healthy"
+    return jsonify({"status": "healthy"})
+
+
+@app.route("/notes", methods=["GET"])
+def get_notes():
+    return jsonify(notes)
+
+
+@app.route("/notes", methods=["POST"])
+def add_note():
+    data = request.get_json()
+
+    if not data or "text" not in data:
+        return jsonify({"error": "Note text is required"}), 400
+
+    note = {
+        "id": len(notes) + 1,
+        "text": data["text"]
     }
+
+    notes.append(note)
+
+    return jsonify(note), 201
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+    
