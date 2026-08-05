@@ -9,7 +9,14 @@ async function loadNotes() {
 
     notes.forEach(note => {
         const li = document.createElement("li");
-        li.textContent = note.text;
+
+        li.innerHTML = `
+            ${note.text}
+            <button onclick="deleteNote(${note.id})">
+                Delete
+            </button>
+        `;
+
         notesList.appendChild(li);
     });
 }
@@ -34,6 +41,16 @@ async function addNote() {
     });
 
     input.value = "";
+
+    loadNotes();
+}
+
+// NEW FUNCTION
+async function deleteNote(id) {
+    await fetch(`${apiUrl}/${id}`, {
+        method: "DELETE"
+    });
+
     loadNotes();
 }
 
