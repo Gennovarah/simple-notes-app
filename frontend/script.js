@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost:5000/notes";
+const API_URL = "https://simple-notes-app-ovh6.onrender.com";
 
 async function loadNotes() {
     const response = await fetch(apiUrl);
