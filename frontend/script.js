@@ -1,32 +1,40 @@
-const input = document.getElementById("noteInput");
-const button = document.getElementById("addButton");
-const list = document.getElementById("noteList");
+const apiUrl = "http://localhost:5000/notes";
 
-button.addEventListener("click", function () {
+async function loadNotes() {
+    const response = await fetch(apiUrl);
+    const notes = await response.json();
 
-    const note = input.value;
+    const notesList = document.getElementById("notes-list");
+    notesList.innerHTML = "";
 
-    if (note === "") {
+    notes.forEach(note => {
+        const li = document.createElement("li");
+        li.textContent = note.text;
+        notesList.appendChild(li);
+    });
+}
+
+async function addNote() {
+    const input = document.getElementById("note-input");
+    const text = input.value.trim();
+
+    if (!text) {
         alert("Please enter a note.");
         return;
     }
 
-    const item = document.createElement("li");
+    await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            text: text
+        })
+    });
 
-const deleteButton = document.createElement("button");
+    input.value = "";
+    loadNotes();
+}
 
-deleteButton.textContent = "Delete";
-
-deleteButton.onclick = function () {
-    item.remove();
-};
-
-item.textContent = note + " ";
-
-item.appendChild(deleteButton);
-
-list.appendChild(item);
-
-input.value = "";
-
-});
+window.onload = loadNotes;

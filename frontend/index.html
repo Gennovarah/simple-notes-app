@@ -4,27 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Notes App</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
 
     <h1>Simple Notes App</h1>
 
     <input
-    id="noteInput"
-    type="text"
-    placeholder="Write a note..."
->
+        type="text"
+        id="note-input"
+        placeholder="Write a note..."
+    >
 
-<button id="addButton">
-    Add Note
-</button>
+    <button onclick="addNote()">
+        Add Note
+    </button>
 
-<ul id="noteList"></ul>
+    <ul id="notes-list"></ul>
 
-</div>
-<script src="script.js"></script>
+    <script src="script.js"></script>
+
 </body>
 </html>
