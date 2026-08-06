@@ -4,8 +4,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Temporary storage for notes
+# Store notes in memory
 notes = []
+
+# Counter to ensure every note has a unique ID
+next_id = 1
 
 
 @app.route("/")
@@ -25,22 +28,24 @@ def get_notes():
 
 @app.route("/notes", methods=["POST"])
 def add_note():
+    global next_id
+
     data = request.get_json()
 
     if not data or "text" not in data:
         return jsonify({"error": "Note text is required"}), 400
 
     note = {
-        "id": len(notes) + 1,
+        "id": next_id,
         "text": data["text"]
     }
 
     notes.append(note)
+    next_id += 1
 
     return jsonify(note), 201
 
 
-# NEW DELETE ROUTE
 @app.route("/notes/<int:note_id>", methods=["DELETE"])
 def delete_note(note_id):
     global notes

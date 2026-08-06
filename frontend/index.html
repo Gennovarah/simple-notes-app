@@ -8,19 +8,25 @@
 </head>
 <body>
 
-    <h1>Simple Notes App</h1>
+    <div class="container">
 
-    <input
-        type="text"
-        id="note-input"
-        placeholder="Write a note..."
-    >
+        <h1>📝 Simple Notes App</h1>
 
-    <button onclick="addNote()">
-        Add Note
-    </button>
+        <div class="input-group">
+            <input
+                type="text"
+                id="note-input"
+                placeholder="Write a note..."
+            >
 
-    <ul id="notes-list"></ul>
+            <button onclick="addNote()">
+                Add Note
+            </button>
+        </div>
+
+        <ul id="notes-list"></ul>
+
+    </div>
 
     <script src="script.js"></script>
 

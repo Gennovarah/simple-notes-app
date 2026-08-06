@@ -1,24 +1,80 @@
 body {
-    font-family: Arial, sans-serif;
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #eef5ff, #dbeafe);
+    margin: 0;
+    padding: 40px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+h1 {
+    text-align: center;
+    color: #1d4ed8;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 input {
-    width: 70%;
-    padding: 10px;
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
 }
 
 button {
-    padding: 10px 20px;
-    margin-left: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: .3s;
+}
+
+button:hover {
+    background: #1d4ed8;
 }
 
 ul {
-    margin-top: 20px;
+    list-style: none;
+    padding: 0;
 }
 
 li {
-    padding: 8px;
+    background: #f8fbff;
+    border-left: 5px solid #2563eb;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li button {
+    background: #dc2626;
+    padding: 8px 12px;
+}
+
+li button:hover {
+    background: #b91c1c;
 }

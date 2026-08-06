@@ -1,7 +1,7 @@
-const API_URL = "https://simple-notes-app-ovh6.onrender.com";
+const API_URL = "http://localhost:5000/notes";
 
 async function loadNotes() {
-    const response = await fetch(`${API_URL}/notes`);
+    const response = await fetch(API_URL);
     const notes = await response.json();
 
     const notesList = document.getElementById("notes-list");
@@ -28,7 +28,7 @@ async function addNote() {
         return;
     }
 
-    await fetch(`${API_URL}/notes`, {
+    await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -44,7 +44,7 @@ async function addNote() {
 }
 
 async function deleteNote(id) {
-    await fetch(`${API_URL}/notes/${id}`, {
+    await fetch(`${API_URL}/${id}`, {
         method: "DELETE"
     });
 
