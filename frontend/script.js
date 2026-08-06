@@ -1,22 +1,26 @@
-const API_URL = "http://localhost:5000/notes";
+const API_URL = "https://simple-notes-app-backend-v736.onrender.com";
 
 async function loadNotes() {
-    const response = await fetch(API_URL);
-    const notes = await response.json();
+    try {
+        const response = await fetch(`${API_URL}/notes`);
+        const notes = await response.json();
 
-    const notesList = document.getElementById("notes-list");
-    notesList.innerHTML = "";
+        const notesList = document.getElementById("notes-list");
+        notesList.innerHTML = "";
 
-    notes.forEach(note => {
-        const li = document.createElement("li");
+        notes.forEach(note => {
+            const li = document.createElement("li");
 
-        li.innerHTML = `
-            ${note.text}
-            <button onclick="deleteNote(${note.id})">Delete</button>
-        `;
+            li.innerHTML = `
+                ${note.text}
+                <button onclick="deleteNote(${note.id})">Delete</button>
+            `;
 
-        notesList.appendChild(li);
-    });
+            notesList.appendChild(li);
+        });
+    } catch (error) {
+        console.error("Error loading notes:", error);
+    }
 }
 
 async function addNote() {
@@ -28,27 +32,34 @@ async function addNote() {
         return;
     }
 
-    await fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            text: text
-        })
-    });
+    try {
+        await fetch(`${API_URL}/notes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                text: text
+            })
+        });
 
-    input.value = "";
-
-    loadNotes();
+        input.value = "";
+        loadNotes();
+    } catch (error) {
+        console.error("Error adding note:", error);
+    }
 }
 
 async function deleteNote(id) {
-    await fetch(`${API_URL}/${id}`, {
-        method: "DELETE"
-    });
+    try {
+        await fetch(`${API_URL}/notes/${id}`, {
+            method: "DELETE"
+        });
 
-    loadNotes();
+        loadNotes();
+    } catch (error) {
+        console.error("Error deleting note:", error);
+    }
 }
 
 window.onload = loadNotes;
