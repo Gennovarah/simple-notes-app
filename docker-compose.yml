@@ -4,6 +4,13 @@ services:
     container_name: notes-api
     ports:
       - "5000:5000"
-    volumes:
-      - ./backend:/app
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: notes-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
     restart: unless-stopped
