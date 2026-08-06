@@ -1,7 +1,7 @@
 const API_URL = "https://simple-notes-app-ovh6.onrender.com";
 
 async function loadNotes() {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${API_URL}/notes`);
     const notes = await response.json();
 
     const notesList = document.getElementById("notes-list");
@@ -12,9 +12,7 @@ async function loadNotes() {
 
         li.innerHTML = `
             ${note.text}
-            <button onclick="deleteNote(${note.id})">
-                Delete
-            </button>
+            <button onclick="deleteNote(${note.id})">Delete</button>
         `;
 
         notesList.appendChild(li);
@@ -30,7 +28,7 @@ async function addNote() {
         return;
     }
 
-    await fetch(apiUrl, {
+    await fetch(`${API_URL}/notes`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -45,9 +43,8 @@ async function addNote() {
     loadNotes();
 }
 
-// NEW FUNCTION
 async function deleteNote(id) {
-    await fetch(`${apiUrl}/${id}`, {
+    await fetch(`${API_URL}/notes/${id}`, {
         method: "DELETE"
     });
 
