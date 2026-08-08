@@ -1,43 +1,57 @@
 const API_URL = "http://13.53.201.163:5000";
 
-const notesList = document.getElementById("notesList");
-const noteForm = document.getElementById("noteForm");
-const noteInput = document.getElementById("noteInput");
-
 async function loadNotes() {
     try {
         const response = await fetch(`${API_URL}/notes`);
 
         if (!response.ok) {
-            throw new Error("Failed to load notes");
+            throw new Error(`Failed to load notes: ${response.status}`);
         }
 
         const notes = await response.json();
 
+        const notesList = document.getElementById("notes-list");
+
+        if (!notesList) {
+            console.error("Element with id 'notes-list' was not found.");
+            return;
+        }
+
         notesList.innerHTML = "";
 
         notes.forEach(note => {
-            const noteElement = document.createElement("div");
-            noteElement.className = "note";
+            const noteItem = document.createElement("li");
 
-            noteElement.innerHTML = `
+            noteItem.className = "note";
+
+            noteItem.innerHTML = `
                 <span>${escapeHtml(note.text)}</span>
-                <button onclick="deleteNote(${note.id})">Delete</button>
+                <button onclick="deleteNote(${note.id})">
+                    Delete
+                </button>
             `;
 
-            notesList.appendChild(noteElement);
+            notesList.appendChild(noteItem);
         });
+
     } catch (error) {
         console.error("Error loading notes:", error);
     }
 }
 
-async function addNote(event) {
-    event.preventDefault();
 
-    const text = noteInput.value.trim();
+async function addNote() {
+    const input = document.getElementById("note-input");
+
+    if (!input) {
+        console.error("Element with id 'note-input' was not found.");
+        return;
+    }
+
+    const text = input.value.trim();
 
     if (!text) {
+        alert("Please enter a note.");
         return;
     }
 
@@ -47,20 +61,25 @@ async function addNote(event) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ text })
+            body: JSON.stringify({
+                text: text
+            })
         });
 
         if (!response.ok) {
-            throw new Error("Failed to add note");
+            throw new Error(`Failed to add note: ${response.status}`);
         }
 
-        noteInput.value = "";
+        input.value = "";
 
         await loadNotes();
+
     } catch (error) {
         console.error("Error adding note:", error);
+        alert("Could not add note. Please try again.");
     }
 }
+
 
 async function deleteNote(id) {
     try {
@@ -69,14 +88,17 @@ async function deleteNote(id) {
         });
 
         if (!response.ok) {
-            throw new Error("Failed to delete note");
+            throw new Error(`Failed to delete note: ${response.status}`);
         }
 
         await loadNotes();
+
     } catch (error) {
         console.error("Error deleting note:", error);
+        alert("Could not delete note. Please try again.");
     }
 }
+
 
 function escapeHtml(text) {
     const div = document.createElement("div");
@@ -84,6 +106,7 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-noteForm.addEventListener("submit", addNote);
 
-loadNotes();
+document.addEventListener("DOMContentLoaded", () => {
+    loadNotes();
+});
