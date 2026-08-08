@@ -1,6 +1,6 @@
 services:
   backend:
-    build: ./backend
+    image: novarah/simple-notes-backend:v1.0.0
     container_name: notes-api
     ports:
       - "5000:5000"
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    image: novarah/simple-notes-frontend:v1.0.0
     container_name: notes-frontend
     ports:
       - "8080:80"
