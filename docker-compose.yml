@@ -1,6 +1,6 @@
 services:
   backend:
-    image: novarah/simple-notes-backend:${IMAGE_TAG}
+    image: novarah/simple-notes-backend:${IMAGE_TAG:-v1.0.8}
     container_name: notes-api
     expose:
       - "5000"
@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: novarah/simple-notes-frontend:${IMAGE_TAG}
+    image: novarah/simple-notes-frontend:${IMAGE_TAG:-v1.0.8}
     container_name: notes-frontend
     ports:
       - "80:80"

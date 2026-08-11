@@ -19,9 +19,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Set image tag
-        run: echo "IMAGE_TAG=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
-
       - name: Build and push backend image
         uses: docker/build-push-action@v6
         with:
@@ -42,30 +39,24 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
           script: |
-            set -e
-
             cd ~/simple-notes-app
+
+            git pull --ff-only origin main
 
             export IMAGE_TAG=v1.0.${{ github.run_number }}
 
             echo "Deploying version: $IMAGE_TAG"
 
-            docker compose config
-
             docker compose pull
 
             docker compose up -d --force-recreate
 
-            echo "Running containers:"
-            docker compose ps
-
-            echo "Backend image:"
-            docker inspect notes-api --format '{{.Config.Image}}'
-
-            echo "Frontend image:"
-            docker inspect notes-frontend --format '{{.Config.Image}}'
-
             docker image prune -f
 
-            echo "Deployment completed successfully: $IMAGE_TAG"
+            echo "Deployment completed: $IMAGE_TAG"
+
+            docker compose ps
