@@ -1,9 +1,9 @@
 services:
   backend:
-    image: novarah/simple-notes-backend:v1.0.0
+    image: novarah/simple-notes-backend:${IMAGE_TAG}
     container_name: notes-api
-    ports:
-      - "5000:5000"
+    expose:
+      - "5000"
     environment:
       DB_HOST: db
       DB_NAME: ${POSTGRES_DB}
@@ -15,10 +15,10 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: novarah/simple-notes-frontend:v1.0.3
+    image: novarah/simple-notes-frontend:${IMAGE_TAG}
     container_name: notes-frontend
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - backend
     restart: unless-stopped

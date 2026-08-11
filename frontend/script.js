@@ -1,4 +1,4 @@
-const API_URL = "http://13.61.108.12:5000";
+const API_URL = "/api";
 
 async function loadNotes() {
     try {
