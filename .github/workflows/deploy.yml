@@ -1,4 +1,4 @@
-name: Build, Push and Deploy Simple Notes App
+name: Deploy Simple Notes App
 
 on:
   push:
@@ -24,14 +24,14 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: novarah/simple-notes-backend:${{ github.sha }}
+          tags: novarah/simple-notes-backend:v1.0.${{ github.run_number }}
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
           push: true
-          tags: novarah/simple-notes-frontend:${{ github.sha }}
+          tags: novarah/simple-notes-frontend:v1.0.${{ github.run_number }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.2.2
@@ -42,16 +42,16 @@ jobs:
           script: |
             cd ~/simple-notes-app
 
-            git fetch origin main
-            git reset --hard origin/main
+            export IMAGE_TAG=v1.0.${{ github.run_number }}
 
-            export IMAGE_TAG=${{ github.sha }}
+            echo "Deploying version: $IMAGE_TAG"
 
             docker compose pull
+
             docker compose up -d --force-recreate
 
-            echo "Production image versions:"
-            docker compose images
+            docker image prune -f
 
-            echo "Container status:"
+            echo "Deployment completed: $IMAGE_TAG"
+
             docker compose ps
