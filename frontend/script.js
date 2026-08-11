@@ -1,4 +1,4 @@
-const API_URL = "http://13.53.201.163:5000";
+const API_URL = "http://13.61.108.12:5000";
 
 async function loadNotes() {
     try {
@@ -38,7 +38,6 @@ async function loadNotes() {
         console.error("Error loading notes:", error);
     }
 }
-
 
 async function addNote() {
     const input = document.getElementById("note-input");
@@ -80,7 +79,6 @@ async function addNote() {
     }
 }
 
-
 async function deleteNote(id) {
     try {
         const response = await fetch(`${API_URL}/notes/${id}`, {
@@ -99,13 +97,11 @@ async function deleteNote(id) {
     }
 }
 
-
 function escapeHtml(text) {
     const div = document.createElement("div");
     div.textContent = text;
     return div.innerHTML;
 }
-
 
 document.addEventListener("DOMContentLoaded", () => {
     loadNotes();
